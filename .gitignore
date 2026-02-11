@@ -1,0 +1,29 @@
+# Compilación
+bin/
+obj/
+
+# Archivos de usuario de Visual Studio
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Archivos de configuración locales
+appsettings.Local.json
+
+# Dependencias de paquetes
+*.nupkg
+packages/
+.nuget/
+
+# Logs y temporales
+*.log
+*.tmp
+
+# Editor / IDE
+.vscode/
+.idea/
+*.vscode
+
+# Publicación
+publish/
