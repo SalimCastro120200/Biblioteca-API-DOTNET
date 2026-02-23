@@ -1,12 +1,15 @@
 using System.ComponentModel.DataAnnotations;
+using BibliotecaAPI.Validaciones;
 
 namespace BibliotecaAPI.Entidades
 {
     public class Autor
     {
         public int Id { get; set; }
-        [Required] // NETCORE VALIDATION
-        public required string Nombre { get; set; } // C SHARP VALIDATION
+        [Required(ErrorMessage = "El campo {0} es requerido")]
+        [StringLength(150, ErrorMessage = "El campo {0} debe tener {1} caracteres o menos")]
+        [PrimeraLetraMayuscula]
+        public required string Nombre { get; set; }
         public List<Libro> Libros { get; set; } = new List<Libro>();
     }
 }

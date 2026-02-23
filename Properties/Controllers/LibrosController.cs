@@ -61,11 +61,8 @@ namespace BibliotecaAPI.Controllers
 
             if (!existeAutor)
             {
-                return BadRequest(new
-                {
-                    status = StatusCodes.Status400BadRequest,
-                    message = $"El autor de id {libro.AutorId} no existe"
-                });
+                ModelState.AddModelError(nameof(libro.AutorId), $"El autor de id {libro.AutorId} no existe"); // Model Error to return ValidationProblem()
+                return ValidationProblem();
             }
 
             context.Add(libro);

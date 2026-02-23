@@ -16,6 +16,7 @@ namespace BibliotecaAPI.Controllers
             this.context = context;
         }
 
+        [HttpGet("/listado-de-autores")]
         [HttpGet]
         public async Task<ActionResult> Get()
         {
@@ -29,8 +30,8 @@ namespace BibliotecaAPI.Controllers
             });
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult> Get(int id)
+        [HttpGet("{id:int}")] // api/autores/1
+        public async Task<ActionResult> Get([FromRoute] int id)
         {
             var autor = await context.Autores
                 .Include(x => x.Libros)
@@ -53,8 +54,31 @@ namespace BibliotecaAPI.Controllers
             });
         }
 
+        [HttpGet("{parametro1}/{parametro2?}")]
+        public ActionResult Get(string parametro1, string parametro2 = "Default")
+        {
+            return Ok(new { parametro1, parametro2 });
+        }
+
+        [HttpGet("{nombre:alpha}")]
+        public async Task<ActionResult<IEnumerable<Autor>>> Get(string nombre)
+        {
+            var autores = await context.Autores
+                .Where(x => x.Nombre.Contains(nombre))
+                .ToListAsync();
+
+            if (!autores.Any())
+            {
+                return NotFound(new { status = 404, message = $"No se encontraron autores con el nombre '{nombre}'." });
+            }
+
+            return Ok(new { status = 200, info = autores });
+        }
+
+
         [HttpPost]
-        public async Task<ActionResult> Post(Autor autor)
+        // public async Task<ActionResult> Post([FromHeader] Autor autor)
+        public async Task<ActionResult> Post([FromBody] Autor autor)
         {
             context.Add(autor);
             await context.SaveChangesAsync();
